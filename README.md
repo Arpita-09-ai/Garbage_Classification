@@ -1,7 +1,8 @@
-🗑️ Garbage Classification with Transfer Learning
-This project was developed during the Shell-Edunet Skills4Future Internship (June–July 2025). It aims to classify garbage images into six categories using deep learning and transfer learning, achieving up to 98% accuracy.
+# 🗑️ Garbage Classification with Transfer Learning
 
-🧠 Objective
+This project was developed during the **Shell-Edunet Skills4Future Internship (June–July 2025)**. It aims to classify garbage images into six categories using deep learning and transfer learning, achieving up to **98% accuracy**.
+
+## 🧠 Objective
 Automatically classify garbage into:
 - Cardboard
 - Glass
@@ -10,17 +11,18 @@ Automatically classify garbage into:
 - Plastic
 - Trash
 
-🗃️ Dataset
+## 🗃️ Dataset
 - Folder: `TrashType_Image_Dataset`
 - Loaded via `ImageDataGenerator` with train/validation split
 - Includes preprocessing and augmentation for better generalization
 
-🧪 Model Details
-- Base Models: EfficientNetV2B2 (primary), MobileNetV2 (for comparison)
-- Framework: TensorFlow / Keras
-- Accuracy Achieved: ✅ **98%**
+## 🧪 Model Details
+- **Base Models**: EfficientNetV2B2 (primary), MobileNetV2 (for comparison)
+- **Framework**: TensorFlow / Keras
+- **Accuracy Achieved**: ✅ **98%**
 
- 📦 Project Structure
+## 📦 Project Structure
+
 Garbage_Classification/
 ├── Week1/
 ├── Week2/
