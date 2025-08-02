@@ -1,15 +1,3 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Logs
-*.log
-
-# VS Code
-.vscode/
-
 # Datasets
 Flask_app_dataset/
 streamlit_app_garbage_classify/streamlit_garbage-dataset/
@@ -17,18 +5,7 @@ streamlit_app_garbage_classify/streamlit_garbage-dataset/
 # Uploads
 uploads/
 
-# Model files
-*.h5
-*.pkl
-*.pt
-*.pth
-*.pb
-*.ckpt
-*.tflite
-*.onnx
-*.joblib
-*.npy
-*.npz
+
 
 # Jupyter
 .ipynb_checkpoints/
@@ -36,7 +13,98 @@ uploads/
 # OS-specific
 .DS_Store
 
-# Virtual environments
+
+
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VS Code settings
+.vscode/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Pyre type checker
+.pyre/
+
+# MyPy
+.mypy_cache/
+
+# Pytest
+.pytest_cache/
+
+# Pylint
+.pylint.d/
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+*.cover
+.hypothesis/
+
+# Environments
+.env
+.venv
 env/
 venv/
 ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Datasets, models, and outputs
+*.h5
+*.ckpt
+*.pth
+*.pt
+*.tflite
+*.pb
+*.onnx
+*.joblib
+*.pkl
+*.npy
+*.npz
+models/
+checkpoints/
+logs/
+outputs/
+data/
+datasets/
