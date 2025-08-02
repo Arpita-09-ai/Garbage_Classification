@@ -1,100 +1,42 @@
-# VS Code settings
-.vscode/
-
-# Environment files
-.env
-*.env
-
-# Jupyter Notebook
-.ipynb_checkpoints/
-
-# IDEs
-.idea/
-*.swp
-*.swo
-
-# macOS
-.DS_Store
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # Logs
 *.log
-logs/
 
-# Datasets, models, and outputs
-models/
-checkpoints/
-outputs/
-data/
-datasets/
+# VS Code
+.vscode/
 
-# Streamlit dataset
-streamlit_app_garbage_classify/streamlit_garbage-dataset/
-
-# Flask dataset
+# Datasets
 Flask_app_dataset/
+streamlit_app_garbage_classify/streamlit_garbage-dataset/
 
 # Uploads
 uploads/
 
 # Model files
 *.h5
-*.ckpt
-*.pth
+*.pkl
 *.pt
-*.tflite
+*.pth
 *.pb
+*.ckpt
+*.tflite
 *.onnx
 *.joblib
-*.pkl
 *.npy
 *.npz
 
-# Archive files
-*.zip
+# Jupyter
+.ipynb_checkpoints/
 
-# Python cache
-__pycache__/
-*.py[co]
-*$py.class
+# OS-specific
+.DS_Store
 
-# Pylint
-.pylint.d/
-
-# Coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-coverage.xml
-*.cover
-.hypothesis/
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Pyre type checker
-.pyre/
-
-# MyPy
-.mypy_cache/
-
-# Pytest
-.pytest_cache/
+# Virtual environments
+env/
+venv/
+ENV/
