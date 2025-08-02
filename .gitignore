@@ -1,34 +1,4 @@
-# Ignore Streamlit dataset
-streamlit_app_garbage_classify/streamlit_garbage-dataset/
-
-# Ignore Flask dataset
-Flask_app_dataset/
-
-# Ignore uploads (test images etc.)
-uploads/
-
-# Ignore model files
-*.h5
-*.ckpt
-*.pth
-*.pt
-*.tflite
-*.pb
-*.onnx
-*.joblib
-*.pkl
-*.npy
-*.npz
-
-# Archive files
-*.zip
-
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-
-# VS Code
+# VS Code settings
 .vscode/
 
 # Environment files
@@ -56,6 +26,48 @@ checkpoints/
 outputs/
 data/
 datasets/
+
+# Streamlit dataset
+streamlit_app_garbage_classify/streamlit_garbage-dataset/
+
+# Flask dataset
+Flask_app_dataset/
+
+# Uploads
+uploads/
+
+# Model files
+*.h5
+*.ckpt
+*.pth
+*.pt
+*.tflite
+*.pb
+*.onnx
+*.joblib
+*.pkl
+*.npy
+*.npz
+
+# Archive files
+*.zip
+
+# Python cache
+__pycache__/
+*.py[co]
+*$py.class
+
+# Pylint
+.pylint.d/
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+*.cover
+.hypothesis/
 
 # Distribution / packaging
 .Python
@@ -86,16 +98,3 @@ var/
 
 # Pytest
 .pytest_cache/
-
-# Pylint
-.pylint.d/
-
-# Coverage
-htmlcov/
-.tox/
-.nox/
-.coverage
-coverage.xml
-*.cover
-.hypothesis/
-
