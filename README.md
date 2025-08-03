@@ -26,6 +26,7 @@ Automatically classify garbage into:
 Garbage_Classification/
 ├── Week1/
 ├── Week2/
+├── Week3/
 ├── Dataset/
 └── README.md
 
