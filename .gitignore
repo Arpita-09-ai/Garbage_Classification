@@ -5,17 +5,11 @@ streamlit_app_garbage_classify/streamlit_garbage-dataset/
 # Uploads
 uploads/
 
-
-
 # Jupyter
 .ipynb_checkpoints/
 
 # OS-specific
 .DS_Store
-
-
-
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -58,7 +52,7 @@ var/
 # Pytest
 .pytest_cache/
 
-# Pylint
+# pylint
 .pylint.d/
 
 # Coverage reports
@@ -84,9 +78,6 @@ venv.bak/
 *.swp
 *.swo
 
-# macOS
-.DS_Store
-
 # Logs
 *.log
 
@@ -102,9 +93,3 @@ venv.bak/
 *.pkl
 *.npy
 *.npz
-models/
-checkpoints/
-logs/
-outputs/
-data/
-datasets/
