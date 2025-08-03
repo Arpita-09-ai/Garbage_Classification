@@ -1,6 +1,8 @@
 # Datasets
 Flask_app_dataset/
 streamlit_app_garbage_classify/streamlit_garbage-dataset/
+data/
+datasets/
 
 # Uploads
 uploads/
@@ -52,7 +54,7 @@ var/
 # Pytest
 .pytest_cache/
 
-# pylint
+# Pylint
 .pylint.d/
 
 # Coverage reports
@@ -80,6 +82,7 @@ venv.bak/
 
 # Logs
 *.log
+logs/
 
 # Datasets, models, and outputs
 *.h5
@@ -93,3 +96,8 @@ venv.bak/
 *.pkl
 *.npy
 *.npz
+
+# Models & Outputs
+models/
+checkpoints/
+outputs/
