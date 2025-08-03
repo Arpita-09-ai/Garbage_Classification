@@ -1,30 +1,31 @@
-# Datasets
-Flask_app_dataset/
-streamlit_app_garbage_classify/streamlit_garbage-dataset/
-data/
-datasets/
-
-# Uploads
-uploads/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# OS-specific
+# =========================
+# OS & IDE files
+# =========================
 .DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
 
-# Byte-compiled / optimized / DLL files
+# =========================
+# Python bytecode & caches
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
+.mypy_cache/
+.pytest_cache/
+.pylint.d/
+.pyre/
 
-# Jupyter Notebook checkpoints
+# =========================
+# Jupyter
+# =========================
 .ipynb_checkpoints/
 
-# VS Code settings
-.vscode/
-
-# Distribution / packaging
+# =========================
+# Distribution / Packaging
+# =========================
 .Python
 build/
 develop-eggs/
@@ -41,23 +42,15 @@ var/
 .installed.cfg
 *.egg
 
+# =========================
 # PyInstaller
+# =========================
 *.manifest
 *.spec
 
-# Pyre type checker
-.pyre/
-
-# MyPy
-.mypy_cache/
-
-# Pytest
-.pytest_cache/
-
-# Pylint
-.pylint.d/
-
-# Coverage reports
+# =========================
+# Coverage / Testing
+# =========================
 htmlcov/
 .tox/
 .nox/
@@ -66,7 +59,9 @@ coverage.xml
 *.cover
 .hypothesis/
 
+# =========================
 # Environments
+# =========================
 .env
 .venv
 env/
@@ -75,16 +70,24 @@ ENV/
 env.bak/
 venv.bak/
 
-# IDEs
-.idea/
-*.swp
-*.swo
-
+# =========================
 # Logs
+# =========================
 *.log
 logs/
 
-# Datasets, models, and outputs
+# =========================
+# Data / Datasets
+# =========================
+Flask_app_dataset/
+streamlit_app_garbage_classify/streamlit_garbage-dataset/
+data/
+datasets/
+uploads/
+
+# =========================
+# Models & Outputs
+# =========================
 *.h5
 *.ckpt
 *.pth
@@ -96,8 +99,6 @@ logs/
 *.pkl
 *.npy
 *.npz
-
-# Models & Outputs
 models/
 checkpoints/
 outputs/
