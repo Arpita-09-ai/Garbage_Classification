@@ -2,49 +2,76 @@
 {% block title %}Home - Smart Trash Classifier{% endblock %}
 
 {% block content %}
-<section class="hero" style="text-align: center; padding: 4rem 2rem; background: linear-gradient(to right, #2c3e50, #4ca1af); color: white;">
-    <h1 style="font-size: 3rem; margin-bottom: 1rem;">♻️ Smart Trash Classifier</h1>
-    <p class="subtitle" style="font-size: 1.3rem;">Sort your waste the smart way – using AI to classify trash via image or webcam.</p>
-    <a href="/predict" class="cta-button" style="margin-top: 2rem; display: inline-block; padding: 0.8rem 2rem; font-size: 1.1rem; background-color: #00c853; color: white; border-radius: 8px; text-decoration: none;">🔍 Try the Classifier</a>
+<section class="hero">
+    <h1>♻️ Smart Trash Classifier</h1>
+    <p class="subtitle">Sort your waste the smart way – using AI to classify trash via image or webcam with 98% accuracy.</p>
+    <a href="/predict" class="cta-button">🚀 Try the Classifier</a>
 </section>
 
 <section class="section" style="padding: 3rem 2rem; text-align: center;">
-    <h2>🚀 Our Mission</h2>
-    <p style="max-width: 600px; margin: auto;">We aim to make waste disposal cleaner and more efficient by leveraging machine learning. Classify trash instantly using just a photo, reduce contamination, and support eco-friendly recycling habits.</p>
+    <h2>🌍 Our Mission</h2>
+    <p style="max-width: 700px; margin: auto; font-size: 1.1rem; line-height: 1.8;">
+        We aim to make waste disposal cleaner and more efficient by leveraging machine learning. 
+        Classify trash instantly using just a photo, reduce contamination, and support eco-friendly recycling habits.
+    </p>
 </section>
 
-<section class="section features" style="background-color: #f7f7f7; padding: 3rem 2rem;">
-    <h2 style="text-align: center;">✨ Key Features</h2>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;">
-        <div class="feature-box" style="width: 250px; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+<section class="features">
+    <h2 style="text-align: center; margin-bottom: 1rem;">✨ Key Features</h2>
+    <div class="feature-grid">
+        <div class="feature-box">
             <h3>🧠 AI Classifier</h3>
-            <p>Built using deep learning and MobileNetV2 for high accuracy across 9+ waste categories.</p>
+            <p>Built using deep learning with EfficientNetV2B2 and MobileNetV2 for high accuracy across 6 waste categories.</p>
         </div>
-        <div class="feature-box" style="width: 250px; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+        <div class="feature-box">
             <h3>📸 Webcam & Upload</h3>
-            <p>Take a live photo or upload an existing image – seamless and responsive.</p>
+            <p>Take a live photo or upload an existing image – seamless and responsive interface.</p>
         </div>
-        <div class="feature-box" style="width: 250px; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+        <div class="feature-box">
             <h3>📊 Confidence Score</h3>
-            <p>Get prediction probability and recycling guidance for each classified item.</p>
+            <p>Get prediction probability and recycling guidance for each classified item with visual feedback.</p>
         </div>
-        <div class="feature-box" style="width: 250px; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
-            <h3>🌙 Dark Mode</h3>
-            <p>Modern UI with dark/light mode toggle for comfortable browsing.</p>
+        <div class="feature-box">
+            <h3>🎨 Modern UI</h3>
+            <p>Responsive design with dark/light mode toggle for comfortable browsing on any device.</p>
+        </div>
+        <div class="feature-box">
+            <h3>🚀 Real-time Processing</h3>
+            <p>Fast image classification with instant results and comprehensive recycling tips.</p>
+        </div>
+        <div class="feature-box">
+            <h3>♿ Accessible</h3>
+            <p>Built with accessibility in mind, supporting screen readers and keyboard navigation.</p>
         </div>
     </div>
 </section>
 
-<section class="section tech" style="padding: 3rem 2rem; text-align: center;">
+<section class="section tech" style="padding: 3rem 2rem; text-align: center; background: var(--card-bg);">
     <h2>🔧 Technology Stack</h2>
-    <ul style="list-style: none; padding: 0; max-width: 600px; margin: auto; font-size: 1.1rem;">
-        <li>💻 Python + Flask for backend logic and routing</li>
-        <li>🧠 TensorFlow & Keras with MobileNetV2 for deep learning classification</li>
-        <li>🌐 HTML5, CSS3, JS for modern UI & responsive frontend</li>
-    </ul>
+    <div style="max-width: 800px; margin: auto;">
+        <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+            <div style="padding: 1rem;">
+                <h4>💻 Backend</h4>
+                <p>Python + Flask for server logic and API endpoints</p>
+            </div>
+            <div style="padding: 1rem;">
+                <h4>🧠 AI Model</h4>
+                <p>TensorFlow & Keras with transfer learning</p>
+            </div>
+            <div style="padding: 1rem;">
+                <h4>🌐 Frontend</h4>
+                <p>HTML5, CSS3, JavaScript for responsive UI</p>
+            </div>
+            <div style="padding: 1rem;">
+                <h4>📱 Mobile-First</h4>
+                <p>Responsive design for all screen sizes</p>
+            </div>
+        </div>
+    </div>
 </section>
 
-<section class="section footer" style="padding: 2rem; text-align: center; color: #666;">
+<section class="section footer" style="padding: 2rem; text-align: center; color: var(--text-light);">
     <p>Made with ❤️ by the Smart Trash Classifier Team. Let's build a cleaner planet together.</p>
+    <p><small>🌱 Every correct classification helps reduce environmental impact</small></p>
 </section>
 {% endblock %}
