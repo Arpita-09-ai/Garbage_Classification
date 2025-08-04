@@ -1,18 +1,27 @@
-
 {% extends "layout.html" %}
 {% block title %}Webcam Classifier - Smart Trash{% endblock %}
 
 {% block content %}
 <div class="webcam-section">
-    <h1 class="page-title">📷 Webcam Trash Classifier</h1>
-    <p class="subtitle">Use your webcam to identify waste materials in real time.</p>
+    <h1 class="page-title">📷 Real-time Waste Classification</h1>
+    <p class="subtitle">Use your webcam to identify waste materials instantly with AI-powered analysis.</p>
 
     <div class="video-container">
         <video id="video" autoplay playsinline class="video-feed"></video>
         <canvas id="canvas" style="display: none;"></canvas>
+        <div id="cameraError" class="error-text" style="display: none;">
+            <i class="fas fa-camera-slash"></i> Camera access denied or unavailable
+        </div>
     </div>
 
-    <button onclick="captureAndSend()" class="predict-button webcam-button">📸 Capture & Predict</button>
+    <div class="webcam-controls">
+        <button onclick="captureAndSend()" class="predict-button webcam-button" id="captureBtn">
+            <i class="fas fa-camera"></i> Capture & Analyze
+        </button>
+        <button onclick="toggleCamera()" class="predict-button" id="toggleBtn" style="background: var(--accent-color);">
+            <i class="fas fa-video"></i> Start Camera
+        </button>
+    </div>
 
     <div id="predictionResult" class="result-card" style="display: none;"></div>
 </div>
@@ -23,29 +32,82 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const result = document.getElementById('predictionResult');
+const captureBtn = document.getElementById('captureBtn');
+const toggleBtn = document.getElementById('toggleBtn');
+const cameraError = document.getElementById('cameraError');
 
-// Start webcam stream
-navigator.mediaDevices.getUserMedia({ video: true })
-    .then(stream => video.srcObject = stream)
-    .catch(err => {
-        console.error('Webcam access error', err);
-        result.style.display = 'block';
-        result.innerHTML = "<p class='error-text'>❌ Could not access webcam. Please allow webcam access and refresh.</p>";
-    });
+let stream = null;
+let cameraActive = false;
 
-// Capture frame and send to server
+async function toggleCamera() {
+    if (!cameraActive) {
+        await startCamera();
+    } else {
+        stopCamera();
+    }
+}
+
+async function startCamera() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                width: { ideal: 640 }, 
+                height: { ideal: 480 },
+                facingMode: 'environment' // Use back camera on mobile
+            } 
+        });
+        
+        video.srcObject = stream;
+        cameraActive = true;
+        captureBtn.disabled = false;
+        toggleBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Camera';
+        toggleBtn.style.background = 'var(--error-color)';
+        cameraError.style.display = 'none';
+        
+    } catch (err) {
+        console.error('Camera access error:', err);
+        cameraError.style.display = 'block';
+        cameraError.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i> 
+            Camera access denied. Please allow camera permissions and refresh the page.
+        `;
+    }
+}
+
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+    }
+    video.srcObject = null;
+    cameraActive = false;
+    captureBtn.disabled = true;
+    toggleBtn.innerHTML = '<i class="fas fa-video"></i> Start Camera';
+    toggleBtn.style.background = 'var(--accent-color)';
+}
+
 function captureAndSend() {
+    if (!cameraActive) {
+        showError('Please start the camera first');
+        return;
+    }
+
     const ctx = canvas.getContext('2d');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     ctx.drawImage(video, 0, 0);
 
+    // Show loading state
+    result.style.display = 'block';
+    result.innerHTML = `
+        <div class="loading-text">
+            <i class="fas fa-spinner fa-spin"></i> Analyzing captured image...
+        </div>
+    `;
+
     canvas.toBlob(blob => {
         const formData = new FormData();
         formData.append('image', blob, 'webcam.jpg');
-
-        result.style.display = 'block';
-        result.innerHTML = "<p class='loading-text'>🔄 Analyzing image...</p>";
 
         fetch('/predict_webcam', {
             method: 'POST',
@@ -53,16 +115,52 @@ function captureAndSend() {
         })
         .then(res => res.json())
         .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
             result.innerHTML = `
-                <h2>🧠 Prediction: <span>${data.prediction}</span></h2>
-                <p>Confidence: <strong>${data.confidence.toFixed(2)}%</strong></p>
+                <h2>🧠 Classification Result</h2>
+                <h3>Type: <span class="highlight">${data.prediction.charAt(0).toUpperCase() + data.prediction.slice(1)}</span></h3>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width: ${data.confidence}%">
+                        ${data.confidence.toFixed(1)}% Confidence
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h4>📋 Recycling Information:</h4>
+                    <p>${data.info || 'Classification completed successfully.'}</p>
+                </div>
             `;
+            result.classList.add('success-animation');
         })
         .catch(error => {
-            result.innerHTML = `<p class='error-text'>⚠️ Prediction failed. Try again.</p>`;
-            console.error(error);
+            console.error('Prediction error:', error);
+            result.innerHTML = `
+                <div class="error-text">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    Prediction failed: ${error.message}. Please try again.
+                </div>
+            `;
         });
-    }, 'image/jpeg');
+    }, 'image/jpeg', 0.8);
 }
+
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-text';
+    errorDiv.innerHTML = `<i class="fas fa-times-circle"></i> ${message}`;
+    
+    document.querySelector('.webcam-section').appendChild(errorDiv);
+    setTimeout(() => errorDiv.remove(), 3000);
+}
+
+// Initialize camera controls
+document.addEventListener('DOMContentLoaded', () => {
+    captureBtn.disabled = true;
+});
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', stopCamera);
 </script>
 {% endblock %}

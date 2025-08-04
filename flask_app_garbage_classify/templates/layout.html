@@ -7,8 +7,9 @@
     <title>{% block title %}Smart Trash Classifier{% endblock %}</title>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     {% block head %}{% endblock %}
 </head>
@@ -17,10 +18,10 @@
     <nav class="navbar">
         <div class="nav-left">
             <a href="/home" class="nav-item">🏠 Home</a>
-            <a href="/predict" class="nav-item">🗂 Upload Classifier</a>
-            <a href="/webcam" class="nav-item">📷 Webcam Classifier</a>
+            <a href="/predict" class="nav-item">📤 Upload</a>
+            <a href="/webcam" class="nav-item">📷 Webcam</a>
         </div>
-        
+        <button id="darkModeToggle" class="dark-mode-toggle">🌓 Toggle Theme</button>
     </nav>
 
     <!-- Main Content -->
@@ -32,16 +33,28 @@
     <script>
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
-            localStorage.setItem("theme", document.body.classList.contains('dark-mode') ? "dark" : "light");
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            
+            // Update button text
+            const toggle = document.getElementById("darkModeToggle");
+            toggle.textContent = isDark ? "☀️ Light Mode" : "🌓 Dark Mode";
         }
 
-        window.onload = () => {
-            if (localStorage.getItem("theme") === "dark") {
+        // Initialize theme on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem("theme");
+            const toggle = document.getElementById("darkModeToggle");
+            
+            if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-mode');
+                toggle.textContent = "☀️ Light Mode";
+            } else {
+                toggle.textContent = "🌓 Dark Mode";
             }
-        };
-
-        document.getElementById("darkModeToggle").addEventListener("click", toggleDarkMode);
+            
+            toggle.addEventListener("click", toggleDarkMode);
+        });
     </script>
 
     {% block extra_js %}{% endblock %}

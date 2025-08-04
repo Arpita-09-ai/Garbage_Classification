@@ -1,38 +1,66 @@
-
 {% extends "layout.html" %}
 {% block title %}Upload Classifier - Smart Trash{% endblock %}
-
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-{% endblock %}
 
 {% block content %}
 <div class="upload-container">
     <h1>📤 Upload Waste Image</h1>
-    <p class="subtitle">Classify trash into categories like battery, plastic, metal, glass, and more using AI.</p>
+    <p class="subtitle">Classify trash into categories like cardboard, glass, metal, paper, plastic, and general waste using AI.</p>
 
-    <form method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
-        <label for="imageUpload" class="custom-file-upload">
-            <i class="fa fa-upload"></i> Choose Image
-        </label>
-        <input type="file" name="image" id="imageUpload" accept="image/*" onchange="previewImage(event)" required>
+    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+        <div class="file-upload-wrapper">
+            <div class="file-drop-zone" id="dropZone" onclick="document.getElementById('imageUpload').click()">
+                <span class="upload-icon">📁</span>
+                <h3>Drop your image here or click to browse</h3>
+                <p>Supports JPG, PNG, JPEG (Max 16MB)</p>
+            </div>
+            <input type="file" name="image" id="imageUpload" accept="image/*" required>
+        </div>
 
-        <img id="preview" class="preview-img" style="display:none; margin-top: 15px; border-radius: 12px; max-width: 100%; box-shadow: 0 0 12px rgba(0,0,0,0.1);">
+        <div id="imagePreview" style="display: none;">
+            <img id="preview" class="preview-img" alt="Preview">
+            <p><strong>File:</strong> <span id="fileName"></span></p>
+        </div>
 
-        <br>
-        <button type="submit" class="predict-button">🔍 Predict</button>
+        <button type="submit" class="predict-button" id="predictBtn">
+            <i class="fas fa-brain"></i> Analyze Image
+        </button>
     </form>
 
-    <!-- Loader -->
+    <!-- Enhanced Loader -->
     <div class="loader" id="loader" style="display: none;"></div>
 
     {% if prediction %}
-    <div class="result-card">
-        <h2>🧠 Prediction: <span class="highlight">{{ prediction }}</span></h2>
-        <p>Confidence: <strong>{{ confidence | round(2) }}%</strong></p>
-        <!-- <img src="{{ url_for('static', filename='flask_app_garbage_classify\\uploads' + filename) }}"
- class="preview-img" alt="Predicted Image"> -->
-        <p class="info-text">{{ trash_info }}</p>
+    <div class="result-card success-animation">
+        <h2>🧠 Classification Result</h2>
+        <div class="result-content">
+            <h3>Type: <span class="highlight">{{ prediction.title() }}</span></h3>
+            
+            <!-- Confidence Bar -->
+            <div class="confidence-bar">
+                <div class="confidence-fill" style="width: {{ confidence }}%;">
+                    {{ "%.1f"|format(confidence) }}% Confidence
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h4>📋 Recycling Information:</h4>
+                <p class="info-text">{{ trash_info }}</p>
+            </div>
+            
+            {% if confidence > 90 %}
+                <div class="confidence-indicator" style="color: var(--success-color);">
+                    <i class="fas fa-check-circle"></i> High Confidence Prediction
+                </div>
+            {% elif confidence > 70 %}
+                <div class="confidence-indicator" style="color: var(--warning-color);">
+                    <i class="fas fa-exclamation-triangle"></i> Moderate Confidence
+                </div>
+            {% else %}
+                <div class="confidence-indicator" style="color: var(--error-color);">
+                    <i class="fas fa-times-circle"></i> Low Confidence - Try a clearer image
+                </div>
+            {% endif %}
+        </div>
     </div>
     {% endif %}
 </div>
@@ -40,18 +68,119 @@
 
 {% block extra_js %}
 <script>
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const output = document.getElementById('preview');
-            output.src = reader.result;
-            output.style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
+    const dropZone = document.getElementById('dropZone');
+    const imageInput = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const preview = document.getElementById('preview');
+    const fileName = document.getElementById('fileName');
+    const form = document.getElementById('uploadForm');
+    const loader = document.getElementById('loader');
+    const predictBtn = document.getElementById('predictBtn');
+
+    // File input change handler
+    imageInput.addEventListener('change', handleFileSelect);
+
+    // Drag and drop handlers
+    dropZone.addEventListener('dragover', handleDragOver);
+    dropZone.addEventListener('dragleave', handleDragLeave);
+    dropZone.addEventListener('drop', handleFileDrop);
+
+    // Form submission handler
+    form.addEventListener('submit', handleFormSubmit);
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+            previewImage(file);
+        }
     }
 
-    function showLoader() {
-        document.getElementById('loader').style.display = 'block';
+    function handleDragOver(event) {
+        event.preventDefault();
+        dropZone.classList.add('drag-over');
+    }
+
+    function handleDragLeave(event) {
+        event.preventDefault();
+        dropZone.classList.remove('drag-over');
+    }
+
+    function handleFileDrop(event) {
+        event.preventDefault();
+        dropZone.classList.remove('drag-over');
+        
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
+            if (file.type.startsWith('image/')) {
+                imageInput.files = files;
+                previewImage(file);
+            } else {
+                showError('Please drop an image file (JPG, PNG, JPEG)');
+            }
+        }
+    }
+
+    function previewImage(file) {
+        // Validate file size (16MB max)
+        if (file.size > 16 * 1024 * 1024) {
+            showError('File size too large. Please choose an image under 16MB.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            fileName.textContent = file.name;
+            imagePreview.style.display = 'block';
+            
+            // Update drop zone
+            dropZone.innerHTML = `
+                <span class="upload-icon">✅</span>
+                <h3>Image Selected!</h3>
+                <p>Click to choose a different image</p>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        
+        if (!imageInput.files[0]) {
+            showError('Please select an image first.');
+            return;
+        }
+
+        // Show loading state
+        loader.style.display = 'block';
+        predictBtn.disabled = true;
+        predictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+
+        // Submit form
+        form.submit();
+    }
+
+    function showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-text';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+        
+        // Remove existing error messages
+        const existingError = document.querySelector('.error-text');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Insert after form
+        form.parentNode.insertBefore(errorDiv, form.nextSibling);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.remove();
+            }
+        }, 5000);
     }
 </script>
 {% endblock %}
