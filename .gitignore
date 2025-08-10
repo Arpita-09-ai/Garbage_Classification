@@ -104,3 +104,7 @@ checkpoints/
 outputs/
 
 venv/
+
+# Ignore dataset folders 
+split_dataset/
+dataset/
