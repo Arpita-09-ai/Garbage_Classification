@@ -4,17 +4,24 @@ import random
 from config import ORIGINAL_DATASET_PATH, SPLIT_DATASET_PATH, SPLIT_RATIOS
 
 def split_data():
-    
-    # Use paths from the config file
     original_path = ORIGINAL_DATASET_PATH
     output_base = SPLIT_DATASET_PATH
 
-    # Clear existing dataset folders if they exist
-    if os.path.exists(output_base):
-        shutil.rmtree(output_base)
-        print(f"Removed existing directory: {output_base}")
+    # Safety check: don't allow deleting original dataset
+    if os.path.abspath(original_path) == os.path.abspath(output_base):
+        raise ValueError("Output path cannot be the same as the original dataset path!")
 
-    # Create output directories (train, val, test) for each class
+    # Create base output folder if it doesn't exist
+    os.makedirs(output_base, exist_ok=True)
+
+    # Clear only train/val/test inside output folder
+    for split in ['train', 'val', 'test']:
+        split_dir = os.path.join(output_base, split)
+        if os.path.exists(split_dir):
+            shutil.rmtree(split_dir)
+            print(f"Cleared existing split folder: {split_dir}")
+
+    # Create empty train/val/test folders
     for split in ['train', 'val', 'test']:
         for class_name in os.listdir(original_path):
             class_dir = os.path.join(original_path, class_name)
@@ -36,18 +43,17 @@ def split_data():
 
         for i, img in enumerate(images):
             src = os.path.join(class_dir, img)
-            
             if i < train_end:
                 dst_folder = "train"
             elif i < val_end:
                 dst_folder = "val"
             else:
                 dst_folder = "test"
-            
+
             dst = os.path.join(output_base, dst_folder, class_name, img)
             shutil.copy(src, dst)
 
-    # print(f"Dataset successfully splitted into train/val/test at: {output_base}")
+    print(f"✅ Dataset successfully split into train/val/test at: {output_base}")
 
 if __name__ == '__main__':
     split_data()

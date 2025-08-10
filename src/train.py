@@ -1,8 +1,6 @@
 import os
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
-# Import variables and the model-building function from your 'src' package
 from src.config import (
     SPLIT_DATASET_PATH,
     SAVED_MODELS_PATH,
@@ -15,12 +13,11 @@ from src.config import (
 )
 from src.model import build_model
 
-# Define paths to the train and validation directories
+# --- Load Data ---
 train_path = os.path.join(SPLIT_DATASET_PATH, "train")
 val_path = os.path.join(SPLIT_DATASET_PATH, "val")
 
-# Load the training dataset
-train_ds = tf.keras.utils.image_dataset_from_directory(
+train_ds = tf.keras.utils.image_dataset_from_directory( # pyright: ignore[reportAttributeAccessIssue]
     train_path,
     image_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
@@ -28,45 +25,38 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
     shuffle=True
 )
 
-# Load the validation dataset
-val_ds = tf.keras.utils.image_dataset_from_directory(
+val_ds = tf.keras.utils.image_dataset_from_directory( # pyright: ignore[reportAttributeAccessIssue]
     val_path,
     image_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     label_mode='int'
 )
 
-# Optimize performance by caching and prefetching data
 AUTOTUNE = tf.data.AUTOTUNE
-train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE) # pyright: ignore[reportAttributeAccessIssue]
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE) # pyright: ignore[reportAttributeAccessIssue]
 
-
-# --- 2. Build the Model ---
-
+# --- Build & Train Model ---
 model = build_model(
-    input_shape=(*IMG_SIZE, 3), 
-    num_classes=NUM_CLASSES, 
+    input_shape=(*IMG_SIZE, 3),
+    num_classes=NUM_CLASSES,
     learning_rate=LEARNING_RATE
 )
 model.summary()
 
-
-# --- 3. Train the Model ---
 history = model.fit(
     train_ds,
     validation_data=val_ds,
     epochs=EPOCHS
 )
 
-
-# Ensure the directory to save the model exists
+# Save Model
 os.makedirs(SAVED_MODELS_PATH, exist_ok=True)
 model_save_path = os.path.join(SAVED_MODELS_PATH, MODEL_NAME)
 model.save(model_save_path)
-print(f" Model saved to: {model_save_path}")
+print(f"✅ Model saved to: {model_save_path}")
 
-
+# --- Plot Accuracy & Loss ---
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
 loss = history.history['loss']

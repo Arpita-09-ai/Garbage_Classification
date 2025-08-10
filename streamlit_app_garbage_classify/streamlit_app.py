@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.models import load_model  # pyright: ignore[reportMissingImports]
+from tensorflow.keras.preprocessing.image import img_to_array  # pyright: ignore[reportMissingImports]
 from PIL import Image
 import time
 
@@ -72,8 +72,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Constants
-MODEL_PATH = "models/Waste_classifier_v2.h5"  # Relative path
-IMG_SIZE = (224, 224)
+MODEL_PATH = "saved_models/garbage_classifier.keras"  # Corrected path to your model
+IMG_SIZE = (124, 124)
 CLASS_LABELS = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 
 # Enhanced class information
@@ -103,7 +103,7 @@ def preprocess_image(img: Image.Image) -> np.ndarray:
         return np.expand_dims(img_array, axis=0)
     except Exception as e:
         st.error(f"Error processing image: {e}")
-        return None
+        return None  # pyright: ignore[reportReturnType]
 
 # Enhanced prediction with confidence visualization
 def predict_image(img: Image.Image, model):
@@ -166,7 +166,10 @@ def main():
         if uploaded_file is not None:
             try:
                 img = Image.open(uploaded_file)
-                st.image(img, caption="Uploaded Image", use_column_width=True)
+                st.image(img, caption="Uploaded Image", use_container_width=True)
+                
+                # Display uploaded file name
+                st.write(f"**Uploaded file name:** {uploaded_file.name}")
                 
                 # Load model
                 model = load_trained_model()
@@ -186,7 +189,7 @@ def main():
                     <div class="result-card">
                         <h2 style="color: {info['color']};">{info['icon']} {label.title()}</h2>
                         <div class="confidence-bar">
-                            <div class="confidence-fill" style="width: {confidence*100}%;">
+                            <div class="confidence-fill" style="width: {confidence*100}%; min-width: 40px;">
                                 {confidence*100:.1f}% Confidence
                             </div>
                         </div>
