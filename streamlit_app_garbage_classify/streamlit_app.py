@@ -17,46 +17,135 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main-header {
-        background: linear-gradient(90deg, #2E8B57, #32CD32);
-        padding: 2rem;
-        border-radius: 10px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2.5rem;
+        border-radius: 20px;
         color: white;
         text-align: center;
         margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .main-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .main-header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin: 0;
     }
     
     .upload-section {
-        background-color: #f0f2f6;
-        padding: 2rem;
-        border-radius: 10px;
-        border: 2px dashed #cccccc;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 2.5rem;
+        border-radius: 20px;
+        border: 3px dashed #667eea;
         text-align: center;
-        margin: 1rem 0;
+        margin: 1.5rem 0;
+        color: #333333;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .upload-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.25);
+        border-color: #764ba2;
+    }
+    
+    .upload-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.5s;
+    }
+    
+    .upload-section:hover::before {
+        left: 100%;
+    }
+    
+    .upload-section h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #4a5568;
+    }
+    
+    .upload-section p {
+        font-size: 1.1rem;
+        color: #718096;
+        margin: 0;
     }
     
     .result-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin: 1.5rem 0;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .result-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .result-card h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .result-card p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4a5568;
         margin: 1rem 0;
     }
     
     .confidence-bar {
-        background-color: #e0e0e0;
-        border-radius: 10px;
-        padding: 3px;
-        margin: 10px 0;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border-radius: 15px;
+        padding: 4px;
+        margin: 15px 0;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #cbd5e1;
     }
     
     .confidence-fill {
-        background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-        height: 20px;
-        border-radius: 7px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        height: 25px;
+        border-radius: 12px;
         text-align: center;
-        line-height: 20px;
+        line-height: 25px;
         color: white;
-        font-weight: bold;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .confidence-fill:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
     
     @media (max-width: 768px) {
@@ -67,6 +156,70 @@ st.markdown("""
         .upload-section {
             padding: 1rem;
         }
+    }
+    
+    /* Enhanced page styling */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    /* Beautiful sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 15px;
+        margin: 1rem;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+    }
+    
+    /* Enhanced button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* File uploader enhancement */
+    .stFileUploader {
+        background: white;
+        border-radius: 15px;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: 2px solid #e2e8f0;
+    }
+    
+    /* Camera input enhancement */
+    .stCameraInput {
+        background: white;
+        border-radius: 15px;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: 2px solid #e2e8f0;
+    }
+    
+    /* Success/Error message styling */
+    .stSuccess, .stWarning, .stError {
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -208,9 +361,14 @@ def main():
     # Footer
     st.markdown("---")
     st.markdown("""
-    <div style="text-align: center; color: #666;">
-        <p>🌱 Help save the environment with proper waste classification</p>
-        <p>Built with Streamlit • Powered by TensorFlow</p>
+    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);">
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">🌱 Help save the environment with proper waste classification</h3>
+        <p style="margin: 0.5rem 0; opacity: 0.9;">Built with Streamlit • Powered by TensorFlow</p>
+        <div style="margin-top: 1rem; opacity: 0.7;">
+            <span style="margin: 0 0.5rem;">♻️</span>
+            <span style="margin: 0 0.5rem;">🌍</span>
+            <span style="margin: 0 0.5rem;">💚</span>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
