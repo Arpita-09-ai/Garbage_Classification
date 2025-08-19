@@ -1,4 +1,5 @@
 import streamlit as st
+from translations import translations
 import numpy as np
 from tensorflow.keras.models import load_model  # pyright: ignore[reportMissingImports]
 from tensorflow.keras.preprocessing.image import img_to_array  # pyright: ignore[reportMissingImports]
@@ -222,14 +223,26 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 </style>
-""", unsafe_allow_html=True)
+# """, unsafe_allow_html=True)
 
+# -------------------------
+# Language Selector
+# -------------------------
+language = st.sidebar.selectbox(
+    translations["en"]["select_language"],   # default shown in English
+    ["English", "Hindi", "Spanish"]
+)
+
+lang_code = {"English":"en", "Hindi":"hi", "Spanish":"es"}[language]
+
+# -------------------------
 # Constants
-MODEL_PATH = "saved_models/garbage_classifier.keras"  # Corrected path to your model
+# -------------------------
+MODEL_PATH = "saved_models/garbage_classifier.keras"  # Correct path to your model
 IMG_SIZE = (124, 124)
 CLASS_LABELS = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 
-# Enhanced class information
+# Enhanced class info
 CLASS_INFO = {
     'cardboard': {'icon': '📦', 'tip': 'Flatten and keep dry before recycling', 'color': '#8B4513'},
     'glass': {'icon': '🍾', 'tip': 'Remove caps and rinse before recycling', 'color': '#00CED1'},
@@ -239,7 +252,9 @@ CLASS_INFO = {
     'trash': {'icon': '🗑️', 'tip': 'General waste - dispose in regular trash bin', 'color': '#696969'}
 }
 
-# Load model with error handling
+# -------------------------
+# Load Model
+# -------------------------
 @st.cache_resource
 def load_trained_model():
     try:
@@ -248,7 +263,9 @@ def load_trained_model():
         st.error(f"Failed to load model: {e}")
         return None
 
-# Enhanced preprocessing
+# -------------------------
+# Preprocess Image
+# -------------------------
 def preprocess_image(img: Image.Image) -> np.ndarray:
     try:
         img = img.convert("RGB").resize(IMG_SIZE)
@@ -256,9 +273,11 @@ def preprocess_image(img: Image.Image) -> np.ndarray:
         return np.expand_dims(img_array, axis=0)
     except Exception as e:
         st.error(f"Error processing image: {e}")
-        return None  # pyright: ignore[reportReturnType]
+        return None
 
-# Enhanced prediction with confidence visualization
+# -------------------------
+# Predict Image
+# -------------------------
 def predict_image(img: Image.Image, model):
     processed = preprocess_image(img)
     if processed is None:
@@ -269,49 +288,44 @@ def predict_image(img: Image.Image, model):
     confidence = np.max(predictions)
     return CLASS_LABELS[class_idx], confidence
 
-# Main App Layout
+# -------------------------
+# Main App
+# -------------------------
 def main():
     # Header
-    st.markdown("""
+    st.markdown(f"""
     <div class="main-header">
-        <h1>♻️ Smart Waste Classification System</h1>
-        <p>AI-powered waste sorting for a sustainable future</p>
+        <h1>{translations[lang_code]['title']}</h1>
+        <p>{translations[lang_code]['subtitle']}</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # Sidebar information
+    # Sidebar
     with st.sidebar:
-        st.header("📋 Classification Categories")
-        for label, info in CLASS_INFO.items():
-            st.markdown(f"""
-            **{info['icon']} {label.title()}**  
-            {info['tip']}
-            """)
         
-        st.header("📊 Model Information")
-        st.info("**Accuracy:** 98%  \n**Model:** EfficientNetV2B2 + MobileNetV2")
+        st.header(translations[lang_code]['sidebar_categories'])
+        for key, data in translations[lang_code]['classes'].items():
+            st.markdown(f"**{data['label']}**  \n{data['tip']}")
 
-    # Main content area
+        st.header(translations[lang_code]['sidebar_model'])
+        st.info(translations[lang_code]['accuracy_info'])
+
+    # Main content columns
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown("""
+        st.markdown(f"""
         <div class="upload-section">
-            <h3>📤 Upload Waste Image</h3>
-            <p>Drag and drop or click to upload an image (JPG, PNG)</p>
+            <h3>{translations[lang_code]['upload_header']}</h3>
+            <p>{translations[lang_code]['upload_desc']}</p>
         </div>
         """, unsafe_allow_html=True)
-        
-        uploaded_file = st.file_uploader(
-            "Choose an image",
-            type=["jpg", "jpeg", "png"],
-            help="Upload a clear image of waste for classification"
-        )
 
-        # Camera option
-        camera_image = st.camera_input("📷 Or take a photo")
-        
-        # Use camera image if uploaded_file is None
+        uploaded_file = st.file_uploader(
+            translations[lang_code]['choose_file'],
+            type=["jpg", "jpeg", "png"]
+        )
+        camera_image = st.camera_input(translations[lang_code]['camera_input'])
         if camera_image is not None and uploaded_file is None:
             uploaded_file = camera_image
 
@@ -320,52 +334,49 @@ def main():
             try:
                 img = Image.open(uploaded_file)
                 st.image(img, caption="Uploaded Image", use_container_width=True)
-                
-                # Display uploaded file name
-                st.write(f"**Uploaded file name:** {uploaded_file.name}")
-                
-                # Load model
+                st.write(f"{translations[lang_code]['uploaded_file']} {uploaded_file.name}")
+
                 model = load_trained_model()
                 if model is None:
                     return
                 
-                # Auto-classify with loading animation
                 with st.spinner('🔍 Analyzing image...'):
-                    time.sleep(1)  # Simulate processing time
+                    time.sleep(1)
                     label, confidence = predict_image(img, model)
+
                 
                 if label and confidence:
-                    # Results display
-                    info = CLASS_INFO[label]
-                    
+    # Get translated info instead of hardcoded CLASS_INFO
+                    info = translations[lang_code]['classes'][label]
+
                     st.markdown(f"""
                     <div class="result-card">
-                        <h2 style="color: {info['color']};">{info['icon']} {label.title()}</h2>
+                        <h2 style="color: {CLASS_INFO[label]['color']};">{CLASS_INFO[label]['icon']} {info['label']}</h2>
                         <div class="confidence-bar">
                             <div class="confidence-fill" style="width: {confidence*100}%; min-width: 40px;">
                                 {confidence*100:.1f}% Confidence
                             </div>
                         </div>
-                        <p><strong>Recycling Tip:</strong> {info['tip']}</p>
+                        <p><strong>{info['tip']}</strong></p>
                     </div>
                     """, unsafe_allow_html=True)
-                    
-                    # Additional insights
+
+
                     if confidence > 0.9:
-                        st.success("🎯 High confidence prediction!")
+                        st.success(translations[lang_code]['high_confidence'])
                     elif confidence > 0.7:
-                        st.warning("⚠️ Moderate confidence - please verify")
+                        st.warning(translations[lang_code]['moderate_confidence'])
                     else:
-                        st.error("❌ Low confidence - try a clearer image")
+                        st.error(translations[lang_code]['low_confidence'])
 
             except Exception as e:
                 st.error(f"Error processing image: {e}")
 
     # Footer
     st.markdown("---")
-    st.markdown("""
+    st.markdown(f"""
     <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);">
-        <h3 style="margin-bottom: 1rem; font-weight: 600;">🌱 Help save the environment with proper waste classification</h3>
+        <h3 style="margin-bottom: 1rem; font-weight: 600;">{translations[lang_code]['footer_text']}</h3>
         <p style="margin: 0.5rem 0; opacity: 0.9;">Built with Streamlit • Powered by TensorFlow</p>
         <div style="margin-top: 1rem; opacity: 0.7;">
             <span style="margin: 0 0.5rem;">♻️</span>
