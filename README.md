@@ -59,6 +59,7 @@ The AI model classifies any uploaded garbage image into:
 | 🟢 Glass     | Jars, shattered pieces       |
 | 🗑️ Trash     | Everything else non-recyclable |
 
+[⬆ Back to top](#readme)
 ---
 
 ## 🧠 Inside the Model
@@ -71,6 +72,7 @@ The AI model classifies any uploaded garbage image into:
 | 📈 Accuracy          | **98%** on validation                            |
 | 🆚 Baseline          | Compared against **MobileNetV2**                 |
 
+[⬆ Back to top](#readme)
 ---
 
 ## 📂 Project Layout
@@ -85,7 +87,7 @@ Garbage_Classification/
 ├── model_efficientnet.h5  # Trained weights
 └── README.md
 ```
-
+[⬆ Back to top](#readme)
 ---
 
 ## 🚀 Live Demo
@@ -101,7 +103,7 @@ pip install -r requirements.txt
 # Launch the app
 streamlit run app.py
 ```
-
+[⬆ Back to top](#readme)
 ---
 
 ## 💡 Features At A Glance
@@ -112,6 +114,7 @@ streamlit run app.py
 📊 Great for learning CNN + Transfer Learning  
 🚮 Encourages environmental awareness
 
+[⬆ Back to top](#readme)
 ---
 
 ## 🛠 Built With
@@ -123,6 +126,7 @@ streamlit run app.py
 | 🧰 Keras     | Transfer learning pipelines   |
 | 💬 Gradio/Streamlit | Web deployment & UI        |
 
+[⬆ Back to top](#readme)
 ---
 
 ## 💬 Community & Feedback
@@ -134,6 +138,7 @@ Got feedback? Found a bug? Want to contribute?
 | [GitHub Issues](https://github.com/AditixAnand/Garbage_Classification/issues) | Bug reports, feature requests |
 | [Discussions](https://github.com/AditixAnand/Garbage_Classification/discussions) | Ideas, questions, suggestions |
 
+[⬆ Back to top](#readme)
 ---
 
 ## 🤝 How to Contribute
@@ -172,6 +177,8 @@ This project was proudly developed as part of the:
 <p align="center">
   <img src="https://img.shields.io/badge/Sustainability-Focused-green?style=for-the-badge">
 </p>
+
+[⬆ Back to top](#readme)
 
 ---
 
