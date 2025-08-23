@@ -42,6 +42,8 @@ This project brings **machine learning** to the front lines of sustainability, h
 
 🧠 Built during the **Shell-Edunet Skills4Future Internship (June–July 2025)**.
 
+[⬆ Back to top](#readme)
+
 ---
 
 ## 🔍 What Can It Detect?
