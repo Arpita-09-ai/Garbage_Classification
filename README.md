@@ -42,6 +42,9 @@ This project brings **machine learning** to the front lines of sustainability, h
 
 🧠 Built during the **Shell-Edunet Skills4Future Internship (June–July 2025)**.
 
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
+
+
 ---
 
 ## 🔍 What Can It Detect?
@@ -57,6 +60,8 @@ The AI model classifies any uploaded garbage image into:
 | 🟢 Glass     | Jars, shattered pieces       |
 | 🗑️ Trash     | Everything else non-recyclable |
 
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
+
 ---
 
 ## 🧠 Inside the Model
@@ -68,6 +73,8 @@ The AI model classifies any uploaded garbage image into:
 | 📱 Interface         | Gradio / Streamlit for live predictions          |
 | 📈 Accuracy          | **98%** on validation                            |
 | 🆚 Baseline          | Compared against **MobileNetV2**                 |
+
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
 
 ---
 
@@ -83,6 +90,7 @@ Garbage_Classification/
 ├── model_efficientnet.h5  # Trained weights
 └── README.md
 ```
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
 
 ---
 
@@ -99,6 +107,7 @@ pip install -r requirements.txt
 # Launch the app
 streamlit run app.py
 ```
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
 
 ---
 
@@ -109,6 +118,8 @@ streamlit run app.py
 ⚙️ Based on clean modular code  
 📊 Great for learning CNN + Transfer Learning  
 🚮 Encourages environmental awareness
+
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
 
 ---
 
@@ -121,6 +132,8 @@ streamlit run app.py
 | 🧰 Keras     | Transfer learning pipelines   |
 | 💬 Gradio/Streamlit | Web deployment & UI        |
 
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
+
 ---
 
 ## 💬 Community & Feedback
@@ -131,6 +144,8 @@ Got feedback? Found a bug? Want to contribute?
 |------------|-------------------------------|
 | [GitHub Issues](https://github.com/AditixAnand/Garbage_Classification/issues) | Bug reports, feature requests |
 | [Discussions](https://github.com/AditixAnand/Garbage_Classification/discussions) | Ideas, questions, suggestions |
+
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
 
 ---
 
@@ -170,6 +185,9 @@ This project was proudly developed as part of the:
 <p align="center">
   <img src="https://img.shields.io/badge/Sustainability-Focused-green?style=for-the-badge">
 </p>
+
+[⬆ Back to top](#️-garbage-classifier-with-transfer-learning)
+
 
 ---
 
